@@ -1,7 +1,7 @@
 package com.nomadworks.devtest.api.retrofitimpl;
 
 import com.nomadworks.devtest.api.GetPlaceInfoApi;
-import com.nomadworks.devtest.data.PlaceInfo;
+import com.nomadworks.devtest.model.PlaceInfo;
 
 import java.lang.ref.WeakReference;
 import java.util.List;

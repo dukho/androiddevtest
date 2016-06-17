@@ -1,48 +1,52 @@
-package com.nomadworks.devtest.api;
+package com.nomadworks.devtest.repository;
 
 import com.nomadworks.devtest.TestUtils;
+import com.nomadworks.devtest.api.GetPlaceInfoApi;
 import com.nomadworks.devtest.api.retrofitimpl.GetPlaceInfoApiRetrofitImpl;
 import com.nomadworks.devtest.model.PlaceInfo;
 
 import org.junit.Test;
-import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.*;
+
 /**
  * Created by choidukho on 17/06/2016.
  */
-public class GetPlaceTest {
+public class RepositoryTest {
     private static final String KEY_RESULT = "key.result";
+
     @Test
-    public void testGetPlace() throws InterruptedException {
-        GetPlaceInfoApi api = new GetPlaceInfoApiRetrofitImpl(TestUtils.getApiBaseUrl());
+    public void testRepository() throws InterruptedException {
+        GetPlaceInfoApi placeInfoApi = new GetPlaceInfoApiRetrofitImpl(TestUtils.getApiBaseUrl());
+        DataRepository repository = new DataRepositoryImpl(placeInfoApi);
+
         final HashMap<String, List<PlaceInfo>> resultMap = new HashMap<>();
         final CountDownLatch latch = new CountDownLatch(1);
-        GetPlaceInfoApi.PlaceCallback callback = new GetPlaceInfoApi.PlaceCallback() {
+
+        DataRepository.PlaceListCallback placeListCallback = new DataRepository.PlaceListCallback() {
             @Override
-            public void onPlaceInfo(List<PlaceInfo> placeList) {
+            public void onPlaceDataSuccess(List<PlaceInfo> placeList) {
                 resultMap.put(KEY_RESULT, placeList);
                 latch.countDown();
             }
 
             @Override
-            public void onPlaceError(String error) {
+            public void onPlaceDataError(String error) {
                 latch.countDown();
             }
         };
 
-        api.requestPlace(callback);
+        repository.getPlaceList(placeListCallback, true);
         latch.await(TestUtils.getApiTimeoutSec(), TimeUnit.SECONDS);
 
-        List<PlaceInfo> placeInfoList = resultMap.get(KEY_RESULT);
+        List<PlaceInfo> result = resultMap.get(KEY_RESULT);
 
-        assertNotNull(placeInfoList);
-        assertThat(placeInfoList.size() > 0, is(true));
-        TestUtils.debugLog("entry: " + placeInfoList.size());
+        assertNotNull(result);
     }
 }

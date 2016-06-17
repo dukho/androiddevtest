@@ -1,4 +1,4 @@
-package com.nomadworks.devtest.data;
+package com.nomadworks.devtest.model;
 
 /**
  * Created by choidukho on 17/06/2016.

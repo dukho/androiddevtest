@@ -1,6 +1,6 @@
 package com.nomadworks.devtest.api.retrofitimpl;
 
-import com.nomadworks.devtest.data.PlaceInfo;
+import com.nomadworks.devtest.model.PlaceInfo;
 
 import java.util.List;
 
