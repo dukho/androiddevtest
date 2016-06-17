@@ -1,0 +1,117 @@
+apply plugin: 'com.android.application'
+
+def buildConfig = rootProject.ext.buildConfig;
+def googleLibs = rootProject.ext.googleLibs;
+def otherLibs = rootProject.ext.otherLibs;
+def testLibs = rootProject.ext.testLibs;
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.3"
+
+    defaultConfig {
+        applicationId "com.nomadworks.devtest"
+        minSdkVersion buildConfig.minSdkVersion
+        targetSdkVersion buildConfig.targetSdkVersion
+        versionCode computeVersionCode()
+        versionName computeVersionName()
+
+        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    packagingOptions {
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
+        exclude 'LICENSE.txt'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/ASL2.0'
+    }
+
+    // Always show the result of every unit test, even if it passes.
+    testOptions.unitTests.all {
+        testLogging {
+            events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
+        }
+    }
+}
+
+def computeVersionCode(){
+    return 1;
+}
+
+def computeVersionName() {
+    return "1.0.0"
+}
+
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile "com.android.support:appcompat-v7:$googleLibs.supportLibraryVersion"
+    compile "com.android.support:design:$googleLibs.supportLibraryVersion"
+    compile "com.android.support:support-v4:$googleLibs.supportLibraryVersion"
+    compile "com.google.android.gms:play-services-location:$googleLibs.playserviceVersion"
+
+    //injection
+    compile "com.jakewharton:butterknife:$otherLibs.butterknifeVersion"
+
+    //networking
+    compile "com.squareup.okhttp3:okhttp:$otherLibs.okhttpVersion"
+    compile "com.google.code.gson:gson:$otherLibs.gsonVersion"
+    compile "com.squareup.retrofit2:retrofit:$otherLibs.retrofitVersion"
+    compile "com.squareup.retrofit2:converter-gson:$otherLibs.retrofitVersion"
+
+    //test
+    compile "com.android.support.test.espresso:espresso-idling-resource:$testLibs.espressoVersion"
+
+    // Dependencies for local unit tests
+    testCompile "junit:junit:$testLibs.junitVersion"
+    testCompile "org.mockito:mockito-all:$testLibs.mockitoVersion"
+    testCompile "org.hamcrest:hamcrest-all:$testLibs.hamcrestVersion"
+    testCompile "com.google.guava:guava:$googleLibs.guavaVersion"
+
+    //mockito proxy for Android test - to use mockito with connected test
+    androidTestCompile "com.crittercism.dexmaker:dexmaker:$testLibs.dexmakerVersion"
+    androidTestCompile "com.crittercism.dexmaker:dexmaker-dx:$testLibs.dexmakerVersion"
+    androidTestCompile "com.crittercism.dexmaker:dexmaker-mockito:$testLibs.dexmakerVersion"
+
+    // Android Testing Support Library's runner and rules
+    androidTestCompile "com.android.support.test:runner:$testLibs.runnerVersion"
+    androidTestCompile "com.android.support.test:rules:$testLibs.rulesVersion"
+
+    // Espresso UI Testing dependencies.
+    androidTestCompile "com.android.support.test.espresso:espresso-core:$testLibs.espressoVersion"
+    androidTestCompile "com.android.support.test.espresso:espresso-contrib:$testLibs.espressoVersion"
+    androidTestCompile "com.android.support.test.espresso:espresso-intents:$testLibs.espressoVersion"
+}
+
+/*
+Resolves dependency versions across test and production APKs, specifically, transitive
+dependencies. This is required since Espresso internally has a dependency on support-annotations.
+*/
+configurations.all {
+    resolutionStrategy.force "com.android.support:support-annotations:$googleLibs.supportLibraryVersion"
+}
+
+/*
+All direct/transitive dependencies shared between your test and production APKs need to be
+excluded from the test APK! This is necessary because both APKs will contain the same classes. Not
+excluding these dependencies from your test configuration will result in an dex pre-verifier error
+at runtime. More info in this tools bug: (https://code.google.com/p/android/issues/detail?id=192497)
+*/
+configurations.compile.dependencies.each { compileDependency ->
+    println "Excluding compile dependency: ${compileDependency.getName()}"
+    configurations.androidTestCompile.dependencies.each { androidTestCompileDependency ->
+        configurations.androidTestCompile.exclude module: "${compileDependency.getName()}"
+    }
+}
