@@ -1,7 +1,10 @@
 package com.nomadworks.devtest;
 
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.nomadworks.devtest.screens.scenario1.Scenario1Fragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -9,5 +12,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if(savedInstanceState == null) {
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.container, Scenario1Fragment.newInstance());
+            transaction.commit();
+        }
     }
 }
