@@ -1,8 +1,10 @@
 package com.nomadworks.devtest.screens.scenario1;
 
-import android.graphics.Color;
 import android.os.Bundle;
 
+import com.nomadworks.devtest.utils.Logging;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,8 +14,9 @@ import java.util.List;
 public class Scenario1Presenter implements Scenario1Contract.Presenter {
     Scenario1Contract.ViewListener mView;
 
-    private int mCurrentPageIndex = 0;
-    private ButtonColor currentColor = ButtonColor.RED; //default color
+    private static final String KEY_PRESENTER_STATE = "key.presenter.state";
+
+    PresenterState mPresenterState = new PresenterState();
 
     //for null view to avoid NPE
     private Scenario1Contract.ViewListener dummyView = new Scenario1Contract.ViewListener() {
@@ -59,6 +62,7 @@ public class Scenario1Presenter implements Scenario1Contract.Presenter {
 
     @Override
     public void onButtonClicked(ButtonColor color) {
+        mPresenterState.buttonColor = color;
         mView.setButtonAreaBackgroundColor(color.getColorCode());
     }
 
@@ -69,36 +73,44 @@ public class Scenario1Presenter implements Scenario1Contract.Presenter {
 
     @Override
     public void onPageSelected(int index) {
-        mCurrentPageIndex = index;
+        mPresenterState.pageIndex = index;
     }
 
     @Override
     public void onPause() {
         mView = dummyView; //we can't touch view while it's not active
+        Logging.log("SC#1 onPause()");
     }
 
     @Override
-    public void onRestoreInstanceState(Bundle state) {
-        //TODO
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        Logging.log("SC#1 onRestoreInstanceState()");
+        if(savedInstanceState.containsKey(KEY_PRESENTER_STATE)) {
+            mPresenterState
+                    = (PresenterState)savedInstanceState.getSerializable(KEY_PRESENTER_STATE);
+        }
     }
 
     @Override
     public void onResume() {
-
+        Logging.log("SC#1 onResume()");
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-
+        Logging.log("SC#1 onSaveInstanceState()");
+        outState.putSerializable(KEY_PRESENTER_STATE, mPresenterState);
     }
 
     @Override
     public void onScrollItemClicked(String item) {
+        mPresenterState.itemInfo = item;
         mView.setText(item);
     }
 
     @Override
     public void setViewListener(Scenario1Contract.ViewListener viewListener) {
         mView = viewListener;
+        Logging.log("SC#1 setViewListener()");
     }
 }

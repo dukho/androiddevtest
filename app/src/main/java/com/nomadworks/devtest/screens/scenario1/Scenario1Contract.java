@@ -30,6 +30,6 @@ public interface Scenario1Contract {
         void onResume();
         void onPause();
         void onSaveInstanceState(Bundle outState);
-        void onRestoreInstanceState(Bundle state);
+        void onRestoreInstanceState(Bundle savedInstanceState);
     }
 }

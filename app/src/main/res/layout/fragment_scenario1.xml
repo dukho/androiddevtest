@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_heightPercent="10%"
+        android:background="@color/style_light_grey"
         android:id="@+id/topScroller"
         >
         <LinearLayout
@@ -18,7 +19,6 @@
             android:orientation="horizontal"
             android:id="@+id/scrollableItemContainer"
             >
-
         </LinearLayout>
     </HorizontalScrollView>
 
@@ -38,51 +38,109 @@
         android:id="@+id/sectionImageText"
         >
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/yesoptusperks"
+            android:scaleType="centerCrop"
+            android:tint="@color/image_tint"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/single_margin"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:text="TextView1"
+            style="@style/text1b"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/single_margin"
+            android:layout_centerInParent="true"
+            android:text="TextView2"
+            style="@style/text1b"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/single_margin"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:text="TextView3"
+            style="@style/text1b"
+            />
+
     </RelativeLayout>
 
-    <TextView
+    <LinearLayout
         android:layout_below="@id/sectionImageText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
         app:layout_heightPercent="10%"
-        android:id="@+id/txtItemInfo"
-        />
+        android:id="@+id/sectionItemInfo">
 
-    <android.support.percent.PercentRelativeLayout
-        android:layout_below="@id/txtItemInfo"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/lbl_selected_item"
+            android:layout_marginRight="@dimen/half_margin"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtItemInfo"
+            />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_below="@id/sectionItemInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_heightPercent="30%"
-        android:layout_marginLeft="@dimen/single_margin"
-        android:layout_marginRight="@dimen/single_margin"
+        android:id="@+id/buttonPanel"
         >
+        <android.support.percent.PercentRelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/single_margin"
+            android:layout_marginRight="@dimen/single_margin"
+            >
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_widthPercent="33%"
-            android:layout_centerVertical="true"
-            android:layout_alignParentLeft="true"
-            android:id="@+id/btnRed"
-            />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_widthPercent="33%"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                android:id="@+id/btn1"
+                />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_widthPercent="33%"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:id="@+id/btnGreen"
-            />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_widthPercent="33%"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/btn2"
+                />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_widthPercent="33%"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:id="@+id/btnBlue"
-            />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_widthPercent="33%"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:id="@+id/btn3"
+                />
 
-    </android.support.percent.PercentRelativeLayout>
+        </android.support.percent.PercentRelativeLayout>
+    </FrameLayout>
 </android.support.percent.PercentRelativeLayout>

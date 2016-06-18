@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Dev Test</string>
+    <string name="lbl_selected_item">Selected item:</string>
 </resources>
