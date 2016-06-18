@@ -18,5 +18,5 @@ public interface DataRepository {
      * @param callback: callback to get data. Caution: this callback is maintained as weak reference
      * @param needRefresh: cache can be used if false, refresh otherwise
      */
-    void getPlaceList(PlaceListCallback callback, boolean needRefresh);
+    Void getPlaceList(PlaceListCallback callback, boolean needRefresh);
 }

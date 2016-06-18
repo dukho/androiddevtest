@@ -40,7 +40,7 @@ public class DataRepositoryImpl implements DataRepository {
     }
 
     @Override
-    public void getPlaceList(PlaceListCallback callback, boolean needRefresh) {
+    public Void getPlaceList(PlaceListCallback callback, boolean needRefresh) {
         mRefCallback = new WeakReference<PlaceListCallback>(callback);
 
         if(mCachedPlace == null || needRefresh) {
@@ -51,6 +51,8 @@ public class DataRepositoryImpl implements DataRepository {
                 mRefCallback.get().onPlaceDataSuccess(mCachedPlace);
             }
         }
+
+        return (Void)null;
     }
 
     private boolean isCallbackValid() {

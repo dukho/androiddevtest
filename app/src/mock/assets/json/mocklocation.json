@@ -1,0 +1,49 @@
+[
+  {
+    "fromcentral": {
+      "car": "80 Mins",
+      "train": "120 Mins"
+    },
+    "id": 1,
+    "location": {
+      "latitude": -33.741865,
+      "longitude": 150.957300
+    },
+    "name": "Bella Vista"
+  },
+  {
+    "fromcentral": {
+      "car": "30 Mins"
+    },
+    "id": 2,
+    "location": {
+      "latitude": -33.861523,
+      "longitude": 151.210884
+    },
+    "name": "Circular Quay"
+  },
+  {
+    "fromcentral": {
+      "car": "20 Mins",
+      "train": "40 Mins"
+    },
+    "id": 3,
+    "location": {
+      "latitude": -33.773770,
+      "longitude": 151.112489
+    },
+    "name": "Macquarie University"
+  },
+  {
+    "fromcentral": {
+      "car": "20 Mins",
+      "train": "40 Mins"
+    },
+    "id": 3,
+    "location": {
+      "latitude": -33.848012,
+      "longitude": 151.066507
+    },
+    "name": "Sydney Olympic Park"
+  }
+]

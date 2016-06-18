@@ -24,6 +24,8 @@ public interface Scenario2Contract {
         void onLocationSelected(PlaceInfo placeInfo);
         void onNavigateRequested();
 
+        void setViewListener(ViewListener viewListener);
+
         //life cycle delegate
         void onResume();
         void onPause();
