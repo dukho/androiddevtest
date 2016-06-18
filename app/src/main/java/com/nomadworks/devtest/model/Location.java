@@ -1,9 +1,11 @@
 package com.nomadworks.devtest.model;
 
+import java.io.Serializable;
+
 /**
  * Created by choidukho on 17/06/2016.
  */
-public class Location {
+public class Location implements Serializable{
     Double latitude;
     Double longitude;
 

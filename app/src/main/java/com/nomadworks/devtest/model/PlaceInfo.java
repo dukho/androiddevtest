@@ -1,9 +1,11 @@
 package com.nomadworks.devtest.model;
 
+import java.io.Serializable;
+
 /**
  * Created by choidukho on 17/06/2016.
  */
-public class PlaceInfo {
+public class PlaceInfo implements Serializable {
     FromCentral fromcentral;
     Integer id;
     Location location;
