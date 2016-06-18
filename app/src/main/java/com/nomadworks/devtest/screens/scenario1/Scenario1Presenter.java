@@ -86,8 +86,16 @@ public class Scenario1Presenter implements Scenario1Contract.Presenter {
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         Logging.log("SC#1 onRestoreInstanceState()");
         if(savedInstanceState.containsKey(KEY_PRESENTER_STATE)) {
-            mPresenterState
+            PresenterState state
                     = (PresenterState)savedInstanceState.getSerializable(KEY_PRESENTER_STATE);
+
+            if(state != null) {
+                mPresenterState = state;
+
+                mView.setButtonAreaBackgroundColor(mPresenterState.buttonColor.getColorCode());
+                mView.setCurrentPage(mPresenterState.pageIndex);
+                mView.setText(mPresenterState.itemInfo);
+            }
         }
     }
 
