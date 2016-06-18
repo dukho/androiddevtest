@@ -60,6 +60,7 @@ dependencies {
     compile "com.android.support:appcompat-v7:$googleLibs.supportLibraryVersion"
     compile "com.android.support:design:$googleLibs.supportLibraryVersion"
     compile "com.android.support:support-v4:$googleLibs.supportLibraryVersion"
+    compile "com.android.support:percent:$googleLibs.supportLibraryVersion"
     compile "com.google.android.gms:play-services-location:$googleLibs.playserviceVersion"
 
     //injection
