@@ -28,7 +28,7 @@ ext {
     buildConfig = [
             buildToolsVersion       : '23.0.3',
             compileSdkVersion       : 23,
-            minSdkVersion           : 14,
+            minSdkVersion           : 16,
             targetSdkVersion        : 23
     ]
 
