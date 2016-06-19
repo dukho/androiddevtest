@@ -42,6 +42,24 @@ android {
         }
     }
 
+    signingConfigs {
+
+        debug {
+            storeFile file("./signing/debug.keystore")
+            storePassword "test1234"
+            keyAlias "prod"
+            keyPassword "test1234"
+        }
+
+        //TODO: to be replaced with actual signing key
+        release {
+            storeFile file("./signing/product.keystore")
+            storePassword "test1234"
+            keyAlias "prod"
+            keyPassword "test1234"
+        }
+    }
+
     packagingOptions {
         exclude 'META-INF/services/javax.annotation.processing.Processor'
         exclude 'LICENSE.txt'
