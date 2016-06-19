@@ -18,15 +18,33 @@ android {
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
     }
 
+    signingConfigs {
+        debug {
+            storeFile file("./signing/debug.keystore")
+            storePassword "test1234"
+            keyAlias "prod"
+            keyPassword "test1234"
+        }
+
+        release {
+            storeFile file("./signing/product.keystore")
+            storePassword "test1234"
+            keyAlias "prod"
+            keyPassword "test1234"
+        }
+    }
+
     buildTypes {
         debug {
             minifyEnabled false
+            signingConfig signingConfigs.debug
             buildConfigField "boolean", "ENABLE_DEBUG_LOG", "true"
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 
         release {
             minifyEnabled false
+            signingConfig signingConfigs.release
             buildConfigField "boolean", "ENABLE_DEBUG_LOG", "false"
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -42,23 +60,7 @@ android {
         }
     }
 
-    signingConfigs {
 
-        debug {
-            storeFile file("./signing/debug.keystore")
-            storePassword "test1234"
-            keyAlias "prod"
-            keyPassword "test1234"
-        }
-
-        //TODO: to be replaced with actual signing key
-        release {
-            storeFile file("./signing/product.keystore")
-            storePassword "test1234"
-            keyAlias "prod"
-            keyPassword "test1234"
-        }
-    }
 
     packagingOptions {
         exclude 'META-INF/services/javax.annotation.processing.Processor'
