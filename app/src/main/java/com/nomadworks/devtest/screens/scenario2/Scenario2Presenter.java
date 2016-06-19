@@ -23,6 +23,9 @@ public class Scenario2Presenter implements Scenario2Contract.Presenter {
             if(isViewPlaceInfoCallbackValid()) {
                 mRefPlaceInfoCallback.get().onPlaceInfoSuccess(placeList);
             }
+
+            mView.setUiLock(false);
+            mView.setWaitState(false);
         }
 
         @Override
@@ -30,6 +33,9 @@ public class Scenario2Presenter implements Scenario2Contract.Presenter {
             if(isViewPlaceInfoCallbackValid()) {
                 mRefPlaceInfoCallback.get().onPlaceError(error);
             }
+
+            mView.setUiLock(false);
+            mView.setWaitState(false);
         }
     };
 
@@ -99,6 +105,9 @@ public class Scenario2Presenter implements Scenario2Contract.Presenter {
 
     @Override
     public void requestPlaceInfoList(Scenario2Contract.PlaceInfoCallback callback) {
+        mView.setUiLock(true);
+        mView.setWaitState(true);
+
         mRefPlaceInfoCallback = new WeakReference<Scenario2Contract.PlaceInfoCallback>(callback);
         mRepository.getPlaceList(mPlaceListCallback, false);
     }

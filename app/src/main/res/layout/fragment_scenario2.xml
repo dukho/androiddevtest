@@ -7,16 +7,32 @@
     android:padding="@dimen/single_margin"
     >
 
-    <Spinner
-        android:id="@+id/spinnerPlace"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Spinner
+            android:id="@+id/spinnerPlace"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+        <ProgressBar
+            android:layout_width="@dimen/wait_spinner_size"
+            android:layout_height="@dimen/wait_spinner_size"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:indeterminate="true"
+            android:id="@+id/waitSpinner"
+            />
+    </FrameLayout>
 
     <TextView
         android:layout_marginBottom="@dimen/half_margin"
         android:layout_marginTop="@dimen/half_margin"
+        android:layout_marginLeft="@dimen/half_margin"
+        android:layout_marginRight="@dimen/half_margin"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/placeinfo_height"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/placeinfo_height"
         android:id="@+id/txtPlaceInfo"
         />
 

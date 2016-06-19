@@ -6,21 +6,29 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
 import com.nomadworks.devtest.R;
 import com.nomadworks.devtest.api.GetPlaceInfoApi;
-import com.nomadworks.devtest.api.retrofitimpl.GetPlaceInfoApiRetrofitImpl;
 import com.nomadworks.devtest.model.PlaceInfo;
+import com.nomadworks.devtest.provider.ServiceProvider;
 import com.nomadworks.devtest.repository.DataRepository;
-import com.nomadworks.devtest.repository.DataRepositoryImpl;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -32,11 +40,14 @@ public class Scenario2Fragment extends Fragment implements Scenario2Contract.Vie
     @Bind(R.id.spinnerPlace)
     Spinner spinnerPlace;
 
+    @Bind(R.id.waitSpinner)
+    ProgressBar waitSpinner;
+
     @Bind(R.id.txtPlaceInfo)
     TextView txtPlaceInfo;
 
     @Bind(R.id.btnNavigate)
-    Button btn_navigate;
+    Button btnNavigate;
 
     @Bind(R.id.mapView)
     MapView mapView;
@@ -47,7 +58,11 @@ public class Scenario2Fragment extends Fragment implements Scenario2Contract.Vie
 
     //map related
     GoogleMap mMap;
+    private static final float DEFAULT_ZOOM = 12f;
 
+    //view data
+    private List<PlaceInfo> viewListPlace;
+    ArrayAdapter<String> mPlaceDataAdapter;
 
     public Scenario2Fragment() {}
 
@@ -68,8 +83,7 @@ public class Scenario2Fragment extends Fragment implements Scenario2Contract.Vie
 
         ButterKnife.bind(this, view);
 
-        mApi = new GetPlaceInfoApiRetrofitImpl(getString(R.string.api_baseurl));
-        mRepository = new DataRepositoryImpl(mApi);
+        mRepository = ServiceProvider.provideDataRepository(getContext());
         mPresenter = new Scenario2Presenter(this, mRepository);
 
         initUI(savedInstanceState);
@@ -78,7 +92,54 @@ public class Scenario2Fragment extends Fragment implements Scenario2Contract.Vie
     }
 
     private void initUI(@Nullable Bundle savedInstanceState) {
+        startInitSpinner();
         initMap(savedInstanceState);
+        btnNavigate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPresenter.onNavigateRequested();
+            }
+        });
+    }
+
+    DataRepository.PlaceListCallback mPlaceListCallback = new DataRepository.PlaceListCallback() {
+        @Override
+        public void onPlaceDataSuccess(List<PlaceInfo> placeList) {
+            viewListPlace = placeList;
+            setSpinner();
+        }
+
+        @Override
+        public void onPlaceDataError(String error) {
+            showError(error);
+        }
+    };
+
+    //getting a list of items can be asynchronous (api driven)
+    private void startInitSpinner() {
+        mRepository.getPlaceList(mPlaceListCallback, false);
+    }
+
+    private void setSpinner() {
+        List<String> list = new ArrayList<>();
+        for(PlaceInfo place : viewListPlace) {
+            list.add(place.getName());
+        }
+        mPlaceDataAdapter = new ArrayAdapter<>(getContext(),
+                android.R.layout.simple_spinner_item, list);
+
+        mPlaceDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerPlace.setAdapter(mPlaceDataAdapter);
+        spinnerPlace.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                PlaceInfo selectedPlace = viewListPlace.get(position);
+                mPresenter.onLocationSelected(selectedPlace);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) { }
+        });
     }
 
     private void initMap(@Nullable Bundle savedInstanceState) {
@@ -146,22 +207,73 @@ public class Scenario2Fragment extends Fragment implements Scenario2Contract.Vie
 
     @Override
     public void moveToLocationOnMap(PlaceInfo placeInfo) {
+        if(mMap == null) return; //sanity check
 
+        LatLng latLng = new LatLng(placeInfo.getLocation().getLatitude(),
+                placeInfo.getLocation().getLongitude());
+        setMapLocation(latLng, true);
     }
 
+    private void setMapLocation(LatLng latLng, boolean animate) {
+        final CameraPosition.Builder builder = CameraPosition.builder()
+                .target(latLng)
+                .zoom(DEFAULT_ZOOM);
+        final CameraUpdate camera = CameraUpdateFactory.newCameraPosition(builder.build());
+
+        if(animate) {
+            mMap.animateCamera(camera);
+        } else {
+            mMap.moveCamera(camera);
+        }
+    }
+
+    private static final String TAB = "    ";
+    private static final char NEW_LINE = '\n';
+    private static final String NOT_AVAILABLE = "N/A";
     @Override
     public void setInformation(PlaceInfo placeInfo) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("Mode of transport:").append(NEW_LINE);
 
+        if(placeInfo.getFromcentral() == null) {
+            builder.append(TAB).append("Info N/A").append(NEW_LINE);
+        } else {
+            builder.append(TAB).append("Car - ");
+            if(placeInfo.getFromcentral().getCar() != null) {
+                builder.append(placeInfo.getFromcentral().getCar()).append(NEW_LINE);
+            } else {
+                builder.append(NOT_AVAILABLE).append(NEW_LINE);
+            }
+
+            builder.append(TAB).append("Train - ");
+            if(placeInfo.getFromcentral().getTrain() != null) {
+                builder.append(placeInfo.getFromcentral().getTrain()).append(NEW_LINE);
+            } else {
+                builder.append(NOT_AVAILABLE).append(NEW_LINE);
+            }
+        }
+
+        txtPlaceInfo.setText(builder.toString());
     }
 
     @Override
     public void setUiLock(boolean locked) {
-
+        if(locked) {
+            spinnerPlace.setEnabled(false);
+            btnNavigate.setEnabled(false);
+        } else {
+            spinnerPlace.setEnabled(true);
+            btnNavigate.setEnabled(true);
+        }
     }
 
     @Override
     public void setWaitState(boolean wait) {
-
+        if(wait) {
+            waitSpinner.setVisibility(View.VISIBLE);
+        } else {
+            waitSpinner.setVisibility(View.GONE);
+        }
     }
 
     @Override
