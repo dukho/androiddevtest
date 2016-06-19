@@ -139,7 +139,7 @@ public class Scenario2Fragment extends MapViewFragment implements Scenario2Contr
         super.onViewCreated(view, savedInstanceState);
 
         if(savedInstanceState != null) {
-            //mPresenter.onRestoreInstanceState(savedInstanceState);
+            mPresenter.onRestoreInstanceState(savedInstanceState);
             spinnerItemIndex = (Integer)savedInstanceState.getSerializable(KEY_SPINNER_INDEX);
 
             if(spinnerItemIndex != null && mPlaceDataAdapter != null) {
@@ -169,7 +169,7 @@ public class Scenario2Fragment extends MapViewFragment implements Scenario2Contr
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        //mPresenter.onSaveInstanceState(outState);
+        mPresenter.onSaveInstanceState(outState);
         outState.putSerializable(KEY_SPINNER_INDEX, spinnerItemIndex);
     }
 

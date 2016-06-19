@@ -28,7 +28,7 @@ public abstract class MapViewFragment extends Fragment {
     private static LatLng DEFAULT_MAP_LOCATION = new LatLng(-33.861523,151.210884);
 
     protected void initMap(@Nullable Bundle savedInstanceState) {
-        mapView.onCreate(savedInstanceState);
+        mapView.onCreate(null); //bug? putting custom state in the bundle crashes
         if (mMap != null) {
             setUpMap();
         } else {
