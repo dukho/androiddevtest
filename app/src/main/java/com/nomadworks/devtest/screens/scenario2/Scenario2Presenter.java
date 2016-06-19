@@ -12,10 +12,12 @@ import java.util.List;
  * Created by choidukho on 18/06/2016.
  */
 public class Scenario2Presenter implements Scenario2Contract.Presenter {
+    private static final String KEY_PRESENTER_STATE = "key.presenter.state";
+
     Scenario2Contract.ViewListener mView;
     DataRepository mRepository;
 
-    PresenterState mPresenterState = new PresenterState();
+    Senario2PresenterState mPresenterState = new Senario2PresenterState();
 
     DataRepository.PlaceListCallback mPlaceListCallback = new DataRepository.PlaceListCallback() {
         @Override
@@ -90,7 +92,15 @@ public class Scenario2Presenter implements Scenario2Contract.Presenter {
 
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
-
+        if(savedInstanceState.containsKey(KEY_PRESENTER_STATE)) {
+            Senario2PresenterState state = (Senario2PresenterState) savedInstanceState.getSerializable(KEY_PRESENTER_STATE);
+            if(state != null) {
+                mPresenterState = state;
+                mView.setInformation(state.selectedPlace);
+            }
+        } else {
+            mPresenterState = new Senario2PresenterState();
+        }
     }
 
     @Override
@@ -100,7 +110,7 @@ public class Scenario2Presenter implements Scenario2Contract.Presenter {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-
+        outState.putSerializable(KEY_PRESENTER_STATE, mPresenterState);
     }
 
     @Override

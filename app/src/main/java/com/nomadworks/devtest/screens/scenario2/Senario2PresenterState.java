@@ -7,6 +7,6 @@ import java.io.Serializable;
 /**
  * Created by choidukho on 18/06/2016.
  */
-public class PresenterState implements Serializable {
+public class Senario2PresenterState implements Serializable {
     public PlaceInfo selectedPlace;
 }

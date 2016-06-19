@@ -44,6 +44,9 @@ public class Scenario2Fragment extends MapViewFragment implements Scenario2Contr
     DataRepository mRepository;
     Scenario2Contract.Presenter mPresenter;
 
+    Integer spinnerItemIndex;
+    private static final String KEY_SPINNER_INDEX = "key.spinner.index";
+
     //view data
     private List<PlaceInfo> viewListPlace;
     ArrayAdapter<String> mPlaceDataAdapter;
@@ -76,8 +79,9 @@ public class Scenario2Fragment extends MapViewFragment implements Scenario2Contr
     }
 
     private void initUI(@Nullable Bundle savedInstanceState) {
-        startInitSpinner();
+
         initMap(savedInstanceState);
+        startInitSpinner();
         btnNavigate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -124,12 +128,24 @@ public class Scenario2Fragment extends MapViewFragment implements Scenario2Contr
             @Override
             public void onNothingSelected(AdapterView<?> parent) { }
         });
+
+        if(spinnerItemIndex != null) {
+            spinnerPlace.setSelection(spinnerItemIndex);
+        }
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        if(savedInstanceState != null) {
+            //mPresenter.onRestoreInstanceState(savedInstanceState);
+            spinnerItemIndex = (Integer)savedInstanceState.getSerializable(KEY_SPINNER_INDEX);
+
+            if(spinnerItemIndex != null && mPlaceDataAdapter != null) {
+                spinnerPlace.setSelection(spinnerItemIndex);
+            }
+        }
     }
 
     @Override
@@ -140,16 +156,21 @@ public class Scenario2Fragment extends MapViewFragment implements Scenario2Contr
     @Override
     public void onPause() {
         super.onPause();
+        mPresenter.onPause();
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        mPresenter.onResume();
+        mPresenter.setViewListener(this);
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        //mPresenter.onSaveInstanceState(outState);
+        outState.putSerializable(KEY_SPINNER_INDEX, spinnerItemIndex);
     }
 
 

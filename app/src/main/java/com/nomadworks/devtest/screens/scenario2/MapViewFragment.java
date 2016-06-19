@@ -93,4 +93,12 @@ public abstract class MapViewFragment extends Fragment {
             mapView.onSaveInstanceState(outState);
         }
     }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        if(mapView != null) {
+            mapView.onLowMemory();
+        }
+    }
 }
