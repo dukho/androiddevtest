@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.nomadworks.devtest.screens.scenario1.Scenario1Fragment;
+import com.nomadworks.devtest.screens.scenario2.Scenario2Fragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -15,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(savedInstanceState == null) {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.container, Scenario1Fragment.newInstance());
+            transaction.replace(R.id.container, Scenario2Fragment.newInstance());
             transaction.commit();
         }
     }

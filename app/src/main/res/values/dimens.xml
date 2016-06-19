@@ -6,4 +6,6 @@
     <dimen name="single_margin">16dp</dimen>
     <dimen name="half_margin">16dp</dimen>
     <dimen name="text1">16sp</dimen>
+
+    <dimen name="placeinfo_height">70dp</dimen>
 </resources>

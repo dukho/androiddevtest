@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Dev Test</string>
     <string name="lbl_selected_item">Selected item:</string>
+    <string name="btn_navigate">NAVIGATE</string>
 </resources>

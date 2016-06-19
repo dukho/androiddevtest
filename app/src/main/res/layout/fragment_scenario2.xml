@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/single_margin"
+    >
+
+    <Spinner
+        android:id="@+id/spinnerPlace"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_marginBottom="@dimen/half_margin"
+        android:layout_marginTop="@dimen/half_margin"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/placeinfo_height"
+        android:id="@+id/txtPlaceInfo"
+        />
+
+    <Button
+        android:layout_marginBottom="@dimen/half_margin"
+        android:layout_marginTop="@dimen/half_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnNavigate"
+        android:text="@string/btn_navigate"
+        />
+
+    <com.google.android.gms.maps.MapView
+        android:layout_marginTop="@dimen/half_margin"
+        android:id="@+id/mapView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        />
+
+
+</LinearLayout>

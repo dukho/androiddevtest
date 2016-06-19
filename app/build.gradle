@@ -97,6 +97,7 @@ dependencies {
     compile "com.android.support:support-v4:$googleLibs.supportLibraryVersion"
     compile "com.android.support:percent:$googleLibs.supportLibraryVersion"
     compile "com.google.android.gms:play-services-location:$googleLibs.playserviceVersion"
+    compile "com.google.android.gms:play-services-maps:$googleLibs.playserviceVersion"
 
     //injection
     compile "com.jakewharton:butterknife:$otherLibs.butterknifeVersion"

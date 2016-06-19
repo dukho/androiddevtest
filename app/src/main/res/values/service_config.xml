@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="api_baseurl">http://express-it.optusnet.com.au/</string>
+    <string name="googlemap_apikey">AIzaSyCuMk0VyeArA3My_-25UdEfdadTDhhJ3EI</string>
+</resources>
