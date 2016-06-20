@@ -171,8 +171,7 @@ public class Scenario1Fragment extends Fragment implements Scenario1Contract.Vie
                 int itemWidth = topScroller.getWidth() / 3;
 
                 for(View view : scrollItemViewList) {
-                    view.getLayoutParams().width = itemWidth;
-                    view.getLayoutParams().height = itemHeight;
+                    view.setLayoutParams(new LinearLayout.LayoutParams(itemWidth, itemHeight));
                 }
             }
         });
